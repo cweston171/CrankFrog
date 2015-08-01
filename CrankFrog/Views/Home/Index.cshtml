@@ -1,0 +1,136 @@
+﻿@model CrankFrog.Models.AppModel
+
+@{
+    ViewBag.Title = "Home Page";
+}
+
+<div class="jumbotron text-center">
+    <h1>CRANKFROG</h1>
+    <div id="searchView" class="container">
+        <p class="lead">Start typing in the form below for autocomplete demo:</p>
+        <div class="row">
+            <div class="input-group col-md-12 col-lg-12">
+                <input id="SearchText" type="text" class="form-control" placeholder="Search Text Here" />
+            </div>
+            <div class="input-group col-md-12 col-lg-12">
+                - OR -
+            </div>
+            <div class="input-group col-md-2 col-lg-2 col-md-offset-3 col-lg-offset3">
+                <button type="button" id="createNewPersonBtn" class="btn btn-lg btn-primary">Create A New Person</button>
+            </div>
+            <div class="input-group col-md-2 col-lg-2">
+                <button type="button" id="listPeopleBtn" class="btn btn-lg btn-primary">View All People</button>
+            </div>
+        </div>
+        <div id="searchResults" style="display: none;"></div>
+    </div>
+    <div id="createView" class="container" style="display: none;">
+        <!-- add new person form with basic validation-->
+        <div class="row text-center" id="newPerson">
+            @Html.Partial("People/NewPersonPartial", Model.NewPerson)
+        </div>
+        <!--/add new person -->
+    </div>
+    <div id="listView" class="container" style="display: none;">
+        <!-- add new person form with basic validation-->
+        <div class="row text-center" id="newPerson">
+            @Html.Partial("People/ListPeoplePartial", Model)
+        </div>
+        <!--/add new person -->
+    </div>
+</div>
+
+
+<script type="text/javascript">
+    var swapViews = function (view) {
+        switch (view) {
+            case "search":
+            default:
+                if (!$('#searchView').is(':visible')) {
+                    $('#createView, #listView').slideUp('fast', function () {
+                        $('#searchView').slideDown('fast');
+                    });
+                }
+                break;
+            case "create":
+                if (!$('#createView').is(':visible')) {
+                    $('#searchView, #listView').slideUp('fast', function () {
+                        $('#createView').slideDown('fast');
+                    });
+                }
+                break;
+            case "list":
+                if (!$('#listView').is(':visible')) {
+                    $('#searchView, #createView').slideUp('fast', function () {
+                        $('#listView').slideDown('fast');
+                    });
+                }
+                break;
+        }
+    }
+
+
+    $(function () {
+        var searchField = $('#SearchText');
+        var backToSearchBtns = $('#backToSearchBtn, #navSearch');
+
+        var listPeopleBtns = $('#listPeopleBtn, #navList');
+
+        var newPersonBtns = $('#createNewPersonBtn, #navCreate');
+        var newPersonSubmitBtn = $('#createSubmitBtn');
+
+        var createForm = $('#createPersonForm');
+        var createFormAction = '@(Url.Action("CreateNewPerson", "People"))';
+
+        searchField.autocomplete({
+            source: function (request, response) {
+                $.ajax({
+                    url: "/Home/AutoCompleteSearch",
+                    type: "POST",
+                    dataType: "json",
+                    data: { term: request.term },
+                    success: function (data) {
+                        response($.map(data, function (item) {
+                            return { label: item.Name, value: item.Name };
+                        }))
+                    }
+                });
+            },
+            messages: {
+                noResults: "", results: ""
+            }
+        });
+
+        createForm.validate();
+
+        newPersonBtns.click(function () {
+            swapViews('create');
+        });
+
+        listPeopleBtns.click(function () {
+            swapViews('list');
+        });
+
+        newPersonSubmitBtn.click(function () {
+            if (createForm.valid()) {
+                // post
+                $.post(createFormAction, createForm.serialize(), function (data) {
+                    if (data.success) {
+                        alert(data.message);
+                        // simple redirect refreshes json array of people (cuz it was easy)
+                        // the alternative is to actually be passed back the new JSON and update it in memory so there
+                        // is no reload - if you want me to redo it that way - just let me know
+                        window.location = '@(Url.Action("Index", "Home"))';
+                    } else {
+                        // spit error
+                        alert(data.message);
+                    }
+                });
+            }
+        });
+
+        backToSearchBtns.click(function () {
+            swapViews('search');
+        });
+    });
+</script>

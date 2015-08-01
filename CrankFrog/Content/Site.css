@@ -1,0 +1,48 @@
+﻿body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+.jumbotron {
+    background: url(images/banner-bg.jpg) no-repeat center center;
+    background-size: cover;
+    color: #fff;
+    padding-top: 20px;
+    min-height: 700px;
+}
+
+.jumbotron h1 { font-weight: 900 !important; }
+
+.jumbotron .btn-primary {
+    font-size: 22px;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #333;
+}
+
+.jumbotron .btn-link { 
+    color: yellow !important; 
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 2px 2px 2px #333;
+}
+
+.field-validation-error {
+    background-color: yellow;
+    font-size: 14px;
+}
+
+.cf-thead { background-color: #000;background-color: rgba(0,0,0, 0.7)}
+.cf-tbody { background-color: #000;background-color: rgba(0,0,0, 0.45)}

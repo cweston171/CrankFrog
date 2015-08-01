@@ -1,0 +1,57 @@
+﻿@model CrankFrog.Models.Person
+
+
+@using (Html.BeginForm("Create", "People", FormMethod.Post, new { id = "createPersonForm" } ))
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-inline">
+        <h4>Create A New Person:</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        <div class="form-group">
+            <div class="col-md-12 col-lg-12 text-center">
+                @Html.Hidden("DateOfEntry", DateTime.Now)
+
+                @Html.ValidationMessageFor(model => model.Name, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.StreetAddress, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.City, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+                @Html.ValidationMessageFor(model => model.PostalCode, "", new { @class = "text-danger" })
+
+                <div class="row">
+                    <div class="col-md-6 col-lg-6">
+                        @Html.EditorFor(model => model.Name, new { htmlAttributes = new { @class = "form-control", placeholder = "Name" } })
+                    </div>
+                    <div class="col-md-6 col-lg-6">
+                        @Html.EditorFor(model => model.StreetAddress, new { htmlAttributes = new { @class = "form-control", placeholder = "Street Address" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-4 col-lg-4">
+                        @Html.EditorFor(model => model.City, new { htmlAttributes = new { @class = "form-control", placeholder = "City" } })
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        @Html.EditorFor(model => model.State, new { htmlAttributes = new { @class = "form-control", placeholder = "State" } })
+                    </div>
+                    <div class="col-md-4 col-lg-4">
+                        @Html.EditorFor(model => model.PostalCode, new { htmlAttributes = new { @class = "form-control", placeholder = "Postal Code" } })
+                    </div>
+                </div>
+
+                <div class="row">
+                    <button id="createSubmitBtn" class="btn btn-primary col-md-12 col-lg-12" type="button">Create Hero</button>
+                </div>
+                <div class="row">
+                    <button id="backToSearchBtn" class="btn btn-link col-md-12 col-lg-12" type="button">Back to Search</button>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+<script type="text/javascript">
+    $(function () {
+    });
+</script>
